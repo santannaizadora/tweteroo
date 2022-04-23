@@ -7,73 +7,8 @@ app.use(express.json());
 app.listen(5000);
 
 
-const users = [];
-const tweets = [
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub1"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub2"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub3"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub4"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub5"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub6"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub7"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub8"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub9"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub10"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub11"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub12"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub13"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub14"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub15"
-    },
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub16"
-    }
-];
+let users = [];
+let tweets = [];
 
 app.post('/sign-up', (req, res) => {
     const user = req.body;
@@ -85,3 +20,15 @@ app.post('/sign-up', (req, res) => {
 app.get('/tweets', (req, res) => {
     res.send(tweets.slice(-10).reverse());
 });  
+
+app.post('/tweets', (req, res) => {
+    const tweet = req.body;
+    const response = {
+        username: tweet.username,
+        avatar: users.find(user => user.username === tweet.username).avatar,
+        tweet: tweet.tweet
+    }
+    tweets.push(response);
+    console.log(response);
+    res.send(response);
+});

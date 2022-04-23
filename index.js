@@ -39,7 +39,7 @@ app.post('/sign-up', (req, res) => {
 
     users.push(user);
     console.log(users);
-    res.send("OK");
+    res.status(201).send("OK");
 });
 
 app.get('/tweets', (req, res) => {

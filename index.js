@@ -19,7 +19,6 @@ const isValidImage = (image) => {
     }
 }
 
-
 app.post('/sign-up', (req, res) => {
     const user = req.body;
 
@@ -64,6 +63,17 @@ app.get('/tweets', (req, res) => {
     console.log(from, to);
     res.send(tweets.slice(to, from).reverse());
 });
+
+app.get('/tweets/:USERNAME', (req, res) => {
+    const user = users.find(u => u.username === req.params.USERNAME);
+    if (!user) {
+        res.status(404).send('Usuário não encontrado!');
+        return;
+    }
+    const userTweets = tweets.filter(t => t.username === user.username);
+    res.send(userTweets);
+});
+
 
 app.post('/tweets', (req, res) => {
     const tweet = req.body;

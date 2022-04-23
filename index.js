@@ -44,17 +44,39 @@ app.post('/sign-up', (req, res) => {
 });
 
 app.get('/tweets', (req, res) => {
-    res.send(tweets.slice(-10).reverse());
+    const postCount = tweets.length;
+    const perPage = 10;
+    const pageCount = Math.ceil(postCount / perPage);
+
+    let page = parseInt(req.query.page);
+    if (page < 1){
+        res.status(400).send('Informe uma página válida!');
+        return;
+    };
+    if (page > pageCount && pageCount > 0){
+        res.status(404).send('Não há mais páginas!');
+        return;
+    };
+
+    const from = postCount - ((page - 1) * perPage);
+    let to = postCount - (page * perPage);
+    if (to < 0) to = 0;
+    console.log(from, to);
+    res.send(tweets.slice(to, from).reverse());
 });
 
 app.post('/tweets', (req, res) => {
     const tweet = req.body;
+    const username = req.headers.user;
+    if (!tweet.tweet || !username) {
+        res.status(400).send('Todos os campos são obrigatórios!');
+        return;
+    }
     const response = {
-        username: tweet.username,
-        avatar: users.find(user => user.username === tweet.username).avatar,
+        username: username,
+        avatar: users.find(user => user.username === username).avatar,
         tweet: tweet.tweet
     }
     tweets.push(response);
-    console.log(response);
-    res.send(response);
+    res.status(201).send(response);
 });
